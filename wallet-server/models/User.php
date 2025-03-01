@@ -22,7 +22,7 @@ class User{
         ]);
     }
 
-    public function findByOrPhone($login){
+    public function findByEmailOrPhone($login){
         $stmt = $this->db->prepare("
             SELECT * FROM users
             WHERE email = :login OR phone = :login
