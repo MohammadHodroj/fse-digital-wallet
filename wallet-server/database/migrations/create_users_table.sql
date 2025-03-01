@@ -10,4 +10,4 @@ CREATE TABLE IF NOT EXISTS users (
     tier ENUM('basic', 'verified', 'premium') DEFAULT 'basic',
     balance DECIMAL(15,2) DEFAULT 0.00,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+)
