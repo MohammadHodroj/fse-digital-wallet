@@ -26,3 +26,5 @@ class IdentityVerification {
         return $stmt->fetch();
     }
 }
+
+?>

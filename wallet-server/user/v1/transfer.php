@@ -18,3 +18,5 @@ $success = $transactionModel->transfer(
 );
 
 echo json_encode(['success' => $success, 'message' => 'Transfer completed']);
+
+?>
