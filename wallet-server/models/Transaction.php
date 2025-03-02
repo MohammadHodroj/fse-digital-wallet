@@ -25,7 +25,7 @@ class Transaction {
         ");
         return $stmt->execute([$userId, $amount, $type, $recipientId]);
     }
-    
+
     public function deposit($userId, $amount) {
     $stmt = $this->db->prepare("
         INSERT INTO transactions (user_id, amount, type)
@@ -41,6 +41,14 @@ class Transaction {
     ");
     return $stmt->execute([$userId, $amount]);
     }
+
+    public function transfer($senderId, $recipientId, $amount) {
+    $stmt = $this->db->prepare("
+        INSERT INTO transactions (user_id, amount, type, recipient_id)
+        VALUES (?, ?, 'transfer', ?)
+    ");
+    return $stmt->execute([$senderId, $amount, 'transfer', $recipientId]);
+}
 }
 
 ?>
