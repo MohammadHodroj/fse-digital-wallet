@@ -5,9 +5,6 @@ require_once __DIR__ . '/../../models/User.php';
 
 $input = json_decode(file_get_contents('php://input'), true);
 
-$db = new Database();
-$conn = $db->getConnection();
-
 try {
     
     $userModel = new User();
