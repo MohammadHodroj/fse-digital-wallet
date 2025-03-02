@@ -25,6 +25,22 @@ class Transaction {
         ");
         return $stmt->execute([$userId, $amount, $type, $recipientId]);
     }
+    
+    public function deposit($userId, $amount) {
+    $stmt = $this->db->prepare("
+        INSERT INTO transactions (user_id, amount, type)
+        VALUES (?, ?, 'deposit')
+    ");
+    return $stmt->execute([$userId, $amount]);
+    }
+
+    public function withdraw($userId, $amount) {
+    $stmt = $this->db->prepare("
+        INSERT INTO transactions (user_id, amount, type)
+        VALUES (?, ?, 'withdrawal')
+    ");
+    return $stmt->execute([$userId, $amount]);
+    }
 }
 
 ?>
