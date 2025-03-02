@@ -31,21 +31,6 @@ class User{
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function updateProfile($userId, $data){
-        $stmt = $this->db->prepare("
-            UPDATE users
-            SET full_name = :full_name, address = :address, phone = :phone
-            WHERE id = :id
-        ");
-
-        return $stmt->execute([
-            ':full_name' => $data['full_name'],
-            ':address' => $data['address'],
-            ':phone' => $data['phone'],
-            ':id' => $userId
-        ]);
-    }
-
     public function delete($userId){
         $stmt = $this->db->prepare("DELETE FROM users WHERE id = :id");
         return $stmt->execute([':id' => $userId]);
@@ -54,6 +39,20 @@ class User{
     public function getAll(){
         $stmt = $this->db->prepare("SELECT id, email, phone, role, created_at FROM users");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function updateProfile($userId, $data) {
+        $stmt = $this->db->prepare("
+            UPDATE users 
+            SET full_name = ?, address = ?, phone = ?
+            WHERE id = ?
+        ");
+        return $stmt->execute([
+            $data['full_name'],
+            $data['address'],
+            $data['phone'],
+            $userId
+        ]);
     }
 
 }
