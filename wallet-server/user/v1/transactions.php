@@ -8,9 +8,23 @@ if (empty($_SESSION['user_id'])) {
     exit;
 }
 
+$input = json_decode(file_get_contents('php://input'), true);
 $transactionModel = new Transaction();
-$transactions = $transactionModel->getHistory($_SESSION['user_id']);
 
-echo json_encode(['success' => true, 'transactions' => $transactions]);
+if ($_SESSION['REQUEST_METHOD'] === 'POST'){
+    if($input['type'] === 'deposit') {
+        $success = $transactionModel->deposit($_SESSION['user_id'], $input['amount']);
+    }
+    elseif($input['type'] === 'withdrawal') {
+        $success = $transactionModel->withdraw($_SESSION['user_id'], $input['amount']);
+    }
+    else {
+        echo json_encode(['success' => false, 'message' => 'Invalid Transaction type']);
+    }
+}
+elseif ($_SESSION['REQUEST_METHOD'] === 'GET') {
+    $transactions = $transactionModel->getHistory($_SESSION['user_id']);
+    echo json_encode(['success' => true, 'transactions' => $transactions]);
+}
 
 ?>
