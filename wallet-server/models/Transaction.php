@@ -1,0 +1,30 @@
+<?php
+require_once __DIR__ . '/../connection/database.php';
+
+class Transaction {
+    private $db;
+
+    public function __construct() {
+        $this->db = (new Database())->getConnection();
+    }
+
+    public function getHistory($userId) {
+        $stmt = $this->db->prepare("
+            SELECT * FROM transactions 
+            WHERE user_id = ?
+            ORDER BY created_at DESC
+        ");
+        $stmt->execute([$userId]);
+        return $stmt->fetchAll();
+    }
+
+    public function create($userId, $amount, $type, $recipientId = null) {
+        $stmt = $this->db->prepare("
+            INSERT INTO transactions (user_id, amount, type, recipient_id)
+            VALUES (?, ?, ?, ?)
+        ");
+        return $stmt->execute([$userId, $amount, $type, $recipientId]);
+    }
+}
+
+?>
