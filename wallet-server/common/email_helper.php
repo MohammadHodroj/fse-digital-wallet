@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../../wallet-server/utils/vendor/autoload.php';
+require __DIR__ . '/../../vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -12,13 +12,13 @@ function sendEmail($to, $subject, $body) {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com'; // Replace with your SMTP server
         $mail->SMTPAuth = true;
-        $mail->Username = 'your_email@gmail.com'; // Replace with your email
-        $mail->Password = 'your_email_password'; // Replace with your email password
+        $mail->Username = 'mohammad.hodroj.2001@gmail.com'; // Replace with your email
+        $mail->Password = 'fiuv awjc hjgz kurr'; // Replace with your email password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // Enable TLS encryption
         $mail->Port = 587; // TCP port to connect to
 
         // Recipients
-        $mail->setFrom('your_email@gmail.com', 'Digital Wallet'); // Replace with your email
+        $mail->setFrom('mohammad.hodroj.2001@gmail.com', 'Digital Wallet'); // Replace with your email
         $mail->addAddress($to); // Add a recipient
 
         // Content
