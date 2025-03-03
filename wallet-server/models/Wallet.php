@@ -25,6 +25,15 @@ class Wallet {
         return $stmt->fetchAll();
     }
     
+    public function getWalletById($walletId) {
+        $stmt = $this->db->prepare("
+            SELECT * FROM wallets 
+            WHERE id = ?
+        ");
+        $stmt->execute([$walletId]);
+        return $stmt->fetch();
+    }
+    
     public function updateBalance($walletId, $amount) {
         $stmt = $this->db->prepare("
             UPDATE wallets 
