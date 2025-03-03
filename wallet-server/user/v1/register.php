@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
 require_once __DIR__ . '/../../models/User.php';
-require_once __DIR__ . '/../../common/helpers.php';
+require_once __DIR__ . '/../../utils/helpers.php';
 
 $input = json_decode(file_get_contents('php://input'), true);
 
