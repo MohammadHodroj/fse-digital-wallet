@@ -55,6 +55,33 @@ class User{
         ]);
     }
 
+    public function checkTransactionLimit($userId, $amount, $type) {
+        $stmt = $this->db->prepare("
+            SELECT tier, daily_limit, weekly_limit, monthly_limit 
+            FROM users 
+            LEFT JOIN account_limits ON users.id = account_limits.user_id
+            WHERE users.id = ?
+        ");
+        $stmt->execute([$userId]);
+        $limits = $stmt->fetch();
+
+        if (!$limits) {
+            return false;
+        }
+
+        $maxAmount = [
+            'basic' => 500,
+            'verified' => 1000,
+            'premium' => 10000
+        ];
+
+        if ($amount > $maxAmount[$limits['tier']]) {
+            return false;
+        }
+
+        return true;
+    }
+
 }
 
 ?>
