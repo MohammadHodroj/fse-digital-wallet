@@ -25,6 +25,23 @@ class IdentityVerification {
         $stmt->execute([$userId]);
         return $stmt->fetch();
     }
+
+    public function getPending() {
+        $stmt = $this->db->query("
+            SELECT * FROM identity_verifications 
+            WHERE status = 'pending'
+        ");
+        return $stmt->fetchAll();
+    }
+
+    public function updateStatus($verificationId, $status, $adminNotes = '') {
+        $stmt = $this->db->prepare("
+            UPDATE identity_verifications 
+            SET status = ?, admin_notes = ?
+            WHERE id = ?
+        ");
+    return $stmt->execute([$status, $adminNotes, $verificationId]);
+    }
 }
 
 ?>
