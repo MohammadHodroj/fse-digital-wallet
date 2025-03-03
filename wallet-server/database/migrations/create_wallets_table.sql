@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS wallets (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    balance DECIMAL(15, 2) DEFAULT 0.00,
+    currency VARCHAR(10) DEFAULT 'USD',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
