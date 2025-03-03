@@ -26,19 +26,6 @@ class Transaction {
         return $stmt->execute([$userId, $amount, $type, $recipientId]);
     }
 
-    public function deposit($userId, $amount) {
-        $userModel = new User();
-        if (!$userModel->checkTransactionLimit($userId, $amount, 'deposit')) {
-            return false;
-        }
-        
-        $stmt = $this->db->prepare("
-            INSERT INTO transactions (user_id, amount, type)
-            VALUES (?, ?, 'deposit')
-        ");
-        return $stmt->execute([$userId, $amount]);
-    }
-
     public function withdraw($userId, $amount) {
         $userModel = new User();
         if (!$userModel->checkTransactionLimit($userId, $amount, 'withdrawal')) {
@@ -58,6 +45,27 @@ class Transaction {
             VALUES (?, ?, 'transfer', ?)
         ");
         return $stmt->execute([$senderId, $amount, 'transfer', $recipientId]);
+    }
+
+        
+    public function deposit($userId, $amount) {
+        $userModel = new User();
+        if (!$userModel->checkTransactionLimit($userId, $amount, 'deposit')) {
+            return false; // Limit exceeded
+        }
+
+        $stmt = $this->db->prepare("
+            INSERT INTO transactions (user_id, amount, type)
+            VALUES (?, ?, 'deposit')
+        ");
+        $success = $stmt->execute([$userId, $amount]);
+
+        if ($success) {
+            $notificationModel = new Notification();
+            $notificationModel->create($userId, "Deposit of $amount completed");
+        }
+
+        return $success;
     }
 }
 
