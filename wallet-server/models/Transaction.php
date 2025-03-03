@@ -27,28 +27,38 @@ class Transaction {
     }
 
     public function deposit($userId, $amount) {
-    $stmt = $this->db->prepare("
-        INSERT INTO transactions (user_id, amount, type)
-        VALUES (?, ?, 'deposit')
-    ");
-    return $stmt->execute([$userId, $amount]);
+        $userModel = new User();
+        if (!$userModel->checkTransactionLimit($userId, $amount, 'deposit')) {
+            return false;
+        }
+        
+        $stmt = $this->db->prepare("
+            INSERT INTO transactions (user_id, amount, type)
+            VALUES (?, ?, 'deposit')
+        ");
+        return $stmt->execute([$userId, $amount]);
     }
 
     public function withdraw($userId, $amount) {
-    $stmt = $this->db->prepare("
-        INSERT INTO transactions (user_id, amount, type)
-        VALUES (?, ?, 'withdrawal')
-    ");
-    return $stmt->execute([$userId, $amount]);
+        $userModel = new User();
+        if (!$userModel->checkTransactionLimit($userId, $amount, 'withdrawal')) {
+            return false;
+        }
+        
+        $stmt = $this->db->prepare("
+            INSERT INTO transactions (user_id, amount, type)
+            VALUES (?, ?, 'withdrawal')
+        ");
+        return $stmt->execute([$userId, $amount]);
     }
 
     public function transfer($senderId, $recipientId, $amount) {
-    $stmt = $this->db->prepare("
-        INSERT INTO transactions (user_id, amount, type, recipient_id)
-        VALUES (?, ?, 'transfer', ?)
-    ");
-    return $stmt->execute([$senderId, $amount, 'transfer', $recipientId]);
-}
+        $stmt = $this->db->prepare("
+            INSERT INTO transactions (user_id, amount, type, recipient_id)
+            VALUES (?, ?, 'transfer', ?)
+        ");
+        return $stmt->execute([$senderId, $amount, 'transfer', $recipientId]);
+    }
 }
 
 ?>
