@@ -22,6 +22,16 @@ class User{
         ]);
     }
 
+    public function getUserById($userId) {
+        $stmt = $this->db->prepare("
+            SELECT id, email, full_name 
+            FROM users 
+            WHERE id = ?
+        ");
+        $stmt->execute([$userId]);
+        return $stmt->fetch();
+    }
+
     public function findByEmailOrPhone($login){
         $stmt = $this->db->prepare("
             SELECT * FROM users
